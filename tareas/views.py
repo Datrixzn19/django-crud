@@ -4,16 +4,15 @@ from django.http import HttpResponse
 
 
 from django.contrib.auth.models import User #crear usuarios 
-from django.contrib.auth import login # solo para guardar datos de una sesion en el navegador 
+from django.contrib.auth import login, logout # solo para guardar datos de una sesion en el navegador 
 # Create your views here.
 
 from django.contrib.auth.forms import UserCreationForm 
 
-def signup(request):
-    #return render(request, 'signup.html', {'form':UserCreationForm}) #el nombre form va a contener lo que devuelva el UserCreat...
+def signup(request):#crear una sesion
     if request.method == 'GET':
         print("Metodo GET")
-        return render(request, 'signup.html', {'form':UserCreationForm})
+        return render(request, 'signup.html', {'form':UserCreationForm})#el nombre form va a contener lo que devuelva el UserCreat...
     else:
         print("Metodo POST")
         if request.POST['password1'] == request.POST['password2']:
@@ -41,3 +40,10 @@ def hello(request):
 
 def tareas(request):
     return render(request, 'tareas.html')
+
+def signout(request):#cerrar la sesion actual ---cuidado con ponerle de nombre logout pq puede haber conflictos 
+    logout(request)
+    return redirect('home')
+
+def signin(request): #logearse con una cuenta ya creada 
+    return 
