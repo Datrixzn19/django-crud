@@ -28,10 +28,12 @@
                 <a class="nav-item nav-link" href="{% url 'hello' %}">hello</a>
                 <a class="nav-item nav-link" href="{% url 'tareas' %}">Tareas</a>
 
+
                 {% if user.is_authenticated %}
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Cerrar Sesión</a>
                 {% else %}
                 <a class="nav-item nav-link" href="{% url 'signup' %}">Registrarse</a>
+                <a class="nav-item nav-link" href="{% url 'signin' %}">Iniciar Sesion</a>
                 {% endif %}
             </div>
         </div>

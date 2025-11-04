@@ -3,11 +3,11 @@ from django.http import HttpResponse
 
 
 
-from django.contrib.auth.models import User #crear usuarios 
-from django.contrib.auth import login, logout # solo para guardar datos de una sesion en el navegador 
+from django.contrib.auth.models import User #modelo de bd, guarda nombre contras.... etc
+from django.contrib.auth import login, logout, authenticate # solo para guardar datos de una sesion en el navegador, validar usuarios  
 # Create your views here.
 
-from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm #crear usuario, comprobar si existe
 
 def signup(request):#crear una sesion
     if request.method == 'GET':
@@ -46,4 +46,17 @@ def signout(request):#cerrar la sesion actual ---cuidado con ponerle de nombre l
     return redirect('home')
 
 def signin(request): #logearse con una cuenta ya creada 
-    return 
+    if request.method=='GET':
+        return render(request, 'signin.html', {'form':AuthenticationForm})
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password']) #si es valido devuelve un user, sino pues estara vacio 
+        print(user)
+        if user is None:
+            return render(request, 'signin.html', 
+                          {'form':AuthenticationForm, 
+                          'error':'Credenciales incorrectas'})
+        else:
+            login(request, user)#guardamos su sesion porque sus credenciales son validas 
+            return redirect('tareas')
+    
+    
