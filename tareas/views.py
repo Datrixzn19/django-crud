@@ -1,9 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
 
-from django.contrib.auth.models import User  
 
+from django.contrib.auth.models import User #crear usuarios 
+from django.contrib.auth import login # solo para guardar datos de una sesion en el navegador 
 # Create your views here.
 
 from django.contrib.auth.forms import UserCreationForm 
@@ -19,7 +20,8 @@ def signup(request):
             try:
                 user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1']) #este user el el del orm de django 
                 user.save()#esto lo guarda dentro de la BD
-                return HttpResponse('Usuario guardado con exito')
+                login(request, user) #pasamos el usuario para que guarde la sesion 
+                return redirect('tareas')
             except:
                 return render(request, 'signup.html', {
                     'form':UserCreationForm,
@@ -36,3 +38,6 @@ def home(request):
 
 def hello(request):
     return render(request, "hello.html")
+
+def tareas(request):
+    return render(request, 'tareas.html')
