@@ -36,7 +36,10 @@ def home(request):
     return render(request, "home.html")
 
 def hello(request):
-    return render(request, "hello.html")
+    return render(request, 'hello.html')
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
 
 def tareas(request):
     return render(request, 'tareas.html')
@@ -57,6 +60,6 @@ def signin(request): #logearse con una cuenta ya creada
                           'error':'Credenciales incorrectas'})
         else:
             login(request, user)#guardamos su sesion porque sus credenciales son validas 
-            return redirect('tareas')
+            return redirect('dashboard')
     
     
