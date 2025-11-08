@@ -3,9 +3,14 @@
 <h1>tareas</h1>
 <ul>
     {% for lista in listar_tareas %}
-    <li>{{ lista.titulo }}</li>
+    {% if lista.important %}{# si es TRUE... #}
+    <h1 style="color: crimson;">{{lista.titulo}}</h1>
+    {% else%}
+    <h1 style="color: rgb(56, 214, 56);">{{lista.titulo}}</h1>
+    {% endif%}
     <p>{{ lista.descripcion }}</p>
     <p>Autor: {{ lista.user.username }}</p>{# Este nombre(user) es el que le pusimos al crearla#}
+    <p> {{ lista.important }} </p>
     {% endfor %}
 </ul>
 

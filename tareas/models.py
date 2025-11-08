@@ -10,7 +10,7 @@ class Tareas(models.Model):
     #fecha en la que fue creada
     fecha_creacion = models.DateTimeField(auto_now_add=True) # al crearla se agregara la fecha actual si no le pasamos 
     #fecha en la que la tarea se marco como completada  
-    dia_completada = models.DateTimeField(null=True)#permite valores nulos
+    dia_completada = models.DateTimeField(null=True, blank=True)#permite valores nulos, campo es opcional durante la validación del formulario
     important = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE) # le indicamos con quien se va a realacionar 
 

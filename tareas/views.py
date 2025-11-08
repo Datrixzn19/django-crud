@@ -74,8 +74,9 @@ def signin(request): #logearse con una cuenta ya creada
 
 # C R U D
 def tareas(request):
-    listar = Tareas.objects.all() # todas las tareass de la BDD
-
+    #listar = Tareas.objects.all() # todas las tareass de la BDD, pero aqui incluso veo las tareas de otros usuarios 
+    listar = Tareas.objects.filter(user=request.user)#solo muestra las tareas que sean del usuario actual
+    # listar = Tareas.objects.filter(user=request.user, dia_completada__isnull=True) se puede poner otros filtros, aqui ponemos solo las tareas no completadas 
 
 
     return render(request, 'tareas.html', {'listar_tareas':listar})
