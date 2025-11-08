@@ -13,6 +13,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm #crea
 from .forms import TaskForm # mi modelo de formulario creado a partir de una tabla 
 
 
+from .models import Tareas # para listarlas 
+
+
+
 def signup(request):#crear una sesion
     if request.method == 'GET':
         print("Metodo GET")
@@ -45,8 +49,7 @@ def hello(request):
 def dashboard(request):
     return render(request, 'dashboard.html')
 
-def tareas(request):
-    return render(request, 'tareas.html')
+
 
 def signout(request):#cerrar la sesion actual ---cuidado con ponerle de nombre logout pq puede haber conflictos 
     logout(request)
@@ -70,10 +73,31 @@ def signin(request): #logearse con una cuenta ya creada
 
 
 # C R U D
+def tareas(request):
+    listar = Tareas.objects.all() # todas las tareass de la BDD
+
+
+
+    return render(request, 'tareas.html', {'listar_tareas':listar})
+
+
 def crear_tarea(request):
     if request.method == 'GET':
         return render(request, 'crear_tarea.html', {'form': TaskForm})#TaskForm es un form que creé a partir de una tabla
     else:
         #print(request.POST) imprime los datos que pusimos 
-        return render(request, 'crear_tarea.html', {'form': TaskForm})
+        try:
+            form = TaskForm(request.POST) # le pasamos el form a TaskForm para que el cree el formulario 
+            new_task = form.save(commit=False)#save es para guardar en una instacia de BD, pero al pasar commit false ya no lo hace, pq aqui solo quiero que me devuelva los datos que estan dentro del formulario 
+            new_task.user = request.user # necesitamos pasarle un usuario para completar todos los datos 
+            new_task.save() #ahora si lo guardamos dentro de la BD
+            return redirect('tareas')
+        except ValueError:
+            return render(request, 'crear_tarea.html', {
+                'form': TaskForm, 
+                "error":'Datos no validos'}
+                )
+
+
+
 

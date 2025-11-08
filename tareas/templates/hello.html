@@ -1,10 +1,14 @@
-
 {% extends 'base.html' %}
 {% block content %}
-    <h1>hello word para puebas</h1>
-    <button>HoLA</button>
-    </form>
+<h1>hello word para puebas</h1>
+{% if user.is_authenticated %}
+<h1>Te has identificado como: {{user.username}}</h1>
+{% else %}
+<p>No has iniciado sesion</p>
+{%endif%}
 
- 
+
+
+
 
 {% endblock %}
