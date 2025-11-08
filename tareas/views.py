@@ -9,6 +9,10 @@ from django.contrib.auth import login, logout, authenticate # solo para guardar 
 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm #crear usuario, comprobar si existe
 
+
+from .forms import TaskForm # mi modelo de formulario creado a partir de una tabla 
+
+
 def signup(request):#crear una sesion
     if request.method == 'GET':
         print("Metodo GET")
@@ -62,4 +66,14 @@ def signin(request): #logearse con una cuenta ya creada
             login(request, user)#guardamos su sesion porque sus credenciales son validas 
             return redirect('dashboard')
     
-    
+
+
+
+# C R U D
+def crear_tarea(request):
+    if request.method == 'GET':
+        return render(request, 'crear_tarea.html', {'form': TaskForm})#TaskForm es un form que creé a partir de una tabla
+    else:
+        #print(request.POST) imprime los datos que pusimos 
+        return render(request, 'crear_tarea.html', {'form': TaskForm})
+

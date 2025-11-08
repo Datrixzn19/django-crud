@@ -15,7 +15,11 @@ urlpatterns = [
 
     path('logout/', views.signout, name='logout'),
 
-    path('signin/', views.signin, name='signin')
+    path('signin/', views.signin, name='signin'),
+
+
+    #C R U D 
+    path('crear_tarea/', views.crear_tarea, name='crear_tarea')
 
 
     ]
