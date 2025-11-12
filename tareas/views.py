@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 
 
@@ -100,5 +100,8 @@ def crear_tarea(request):
                 )
 
 
-
+def tarea_detalles(request, id_tarea):
+    #tarea = Tareas.objects.get(pk=id_tarea) si no encuentra cae en servidor
+    tarea = get_object_or_404(Tareas, pk=id_tarea) # hay que pasarle a cual modelo consultar 
+    return render(request, 'tarea_unica.html', {'tarea':tarea})
 

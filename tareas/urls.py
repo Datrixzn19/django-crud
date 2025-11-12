@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('signup/', views.signup, name='signup'),
 
-    path('tareas/', views.tareas, name='tareas'),
+    
 
     path('dashboard/', views.dashboard, name='dashboard'),
 
@@ -19,7 +19,10 @@ urlpatterns = [
 
 
     #C R U D 
-    path('crear_tarea/', views.crear_tarea, name='crear_tarea')
+    
+    path('crear_tarea/', views.crear_tarea, name='crear_tarea'),
 
+    path('tareas/', views.tareas, name='tareas'),
+    path('tarea_detalles/<int:id_tarea>/', views.tarea_detalles, name='tarea_detalles') # poner el parametro al lado de request en views 
 
     ]
