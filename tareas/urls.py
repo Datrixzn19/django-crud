@@ -23,6 +23,10 @@ urlpatterns = [
     path('crear_tarea/', views.crear_tarea, name='crear_tarea'),
 
     path('tareas/', views.tareas, name='tareas'),
-    path('tarea_detalles/<int:id_tarea>/', views.tarea_detalles, name='tarea_detalles') # poner el parametro al lado de request en views 
+    path('tarea_detalles/<int:id_tarea>/', views.tarea_detalles, name='tarea_detalles'), # poner el parametro al lado de request en views 
+
+    path('tarea_completada/<int:id_tarea>/completada/', views.tarea_completada, name='tarea_completada')
+
+    
 
     ]

@@ -15,7 +15,7 @@ from .forms import TaskForm # mi modelo de formulario creado a partir de una tab
 
 from .models import Tareas # para listarlas 
 
-
+from django.utils import timezone
 
 def signup(request):#crear una sesion
     if request.method == 'GET':
@@ -75,7 +75,7 @@ def signin(request): #logearse con una cuenta ya creada
 # C R U D
 def tareas(request):
     #listar = Tareas.objects.all() # todas las tareass de la BDD, pero aqui incluso veo las tareas de otros usuarios 
-    listar = Tareas.objects.filter(user=request.user)#solo muestra las tareas que sean del usuario actual
+    listar = Tareas.objects.filter(user=request.user, dia_completada__isnull=True)#solo muestra las tareas que sean del usuario actual
     # listar = Tareas.objects.filter(user=request.user, dia_completada__isnull=True) se puede poner otros filtros, aqui ponemos solo las tareas no completadas 
 
 
@@ -100,8 +100,23 @@ def crear_tarea(request):
                 )
 
 
-def tarea_detalles(request, id_tarea):
-    #tarea = Tareas.objects.get(pk=id_tarea) si no encuentra cae en servidor
-    tarea = get_object_or_404(Tareas, pk=id_tarea) # hay que pasarle a cual modelo consultar 
-    return render(request, 'tarea_unica.html', {'tarea':tarea})
 
+def tarea_detalles(request, id_tarea):
+    if request.method=='GET':
+        #tarea = Tareas.objects.get(pk=id_tarea) si no encuentra cae en servidor
+        tarea = get_object_or_404(Tareas, pk=id_tarea) # hay que pasarle a cual modelo consultar 
+        form = TaskForm(instance=tarea) # instance=tarea le dice al formulario que se precargue con los datos de la tarea obtenida.
+        return render(request, 'tarea_unica.html', {'tarea':tarea, 'form':form})
+    else:
+        tarea = get_object_or_404(Tareas, pk=id_tarea) # hay que pasarle a cual modelo consultar 
+        form = TaskForm(request.POST, instance=tarea) #instance=tarea vincula el formulario a la tarea existente, asegurando que los cambios se apliquen a este objeto en la base de datos es actualización, no nueva creación)
+        form.save()
+        return redirect('tareas')
+
+def tarea_completada(request, id_tarea):
+    tarea = get_object_or_404(Tareas, user=request.user, pk=id_tarea)
+    if request.method == 'POST':
+        tarea.dia_completada = timezone.now() # es para al ponerle ya una fecha sepamos que ha sido completada
+        tarea.save()
+        # tarea.delete() si la quisieramos borrar 
+        return redirect('tareas')
