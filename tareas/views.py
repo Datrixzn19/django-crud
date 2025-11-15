@@ -17,6 +17,11 @@ from .models import Tareas # para listarlas
 
 from django.utils import timezone
 
+
+from django.contrib.auth.decorators import login_required # para proteger rutas 
+
+
+
 def signup(request):#crear una sesion
     if request.method == 'GET':
         print("Metodo GET")
@@ -46,6 +51,7 @@ def home(request):
 def hello(request):
     return render(request, 'hello.html')
 
+@login_required
 def dashboard(request):
     return render(request, 'dashboard.html')
 
